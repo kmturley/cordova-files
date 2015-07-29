@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <meta charset=utf-8 />
+    <title>Cordova Files</title>
+    <link href="css/index.css" rel="stylesheet" />
+</head>
+<body>
+    <div id="example-list-fs" class="panel">
+        <h4>Local filesystem</h4>
+        <button>Add some files</button> <button>List files</button> <button>Remove all files</button>
+        <ul id="example-list-fs-ul"></ul>
+    </div>
+    <div id="example-list-fs2" class="panel">
+        <h4>Types of files</h4>
+        <button>Load filesystem log.txt</button>
+        <button>Load web asset logo.png</button>
+        <input type="file" />
+        <div id="output" class="output"></div>
+    </div>
+    <script src="cordova.js"></script>
+    <script src="js/index.js"></script>
+</body>
+</html>
