@@ -38,6 +38,7 @@
                 buttons = document.querySelectorAll('#example-list-fs button'),
                 filelist = document.querySelector('#example-list-fs-ul');
             
+            // adding local files
             buttons[0].addEventListener('click', function (e) {
                 if (!fs) {
                     return;
@@ -48,6 +49,7 @@
                 filelist.innerHTML = 'Files created.';
             }, false);
             
+            // reading local files
             buttons[1].addEventListener('click', function (e) {
                 if (!fs) {
                     return;
@@ -76,6 +78,7 @@
                 }, me.onError);
             }, false);
             
+            // remove local files
             buttons[2].addEventListener('click', function (e) {
                 if (!fs) {
                     return;
@@ -105,6 +108,7 @@
                 inputs = document.querySelectorAll('#example-list-fs2 input'),
                 output = document.getElementById('output');
             
+            // load a local file
             buttons[0].addEventListener('click', function (e) {
                 if (!fs) {
                     return;
@@ -118,6 +122,7 @@
                 }, me.onError);
             }, false);
             
+            // load web asset
             buttons[1].addEventListener('click', function (e) {
                 if (!fs) {
                     return;
@@ -136,6 +141,7 @@
                 xhr.send();
             }, false);
             
+            // browse for a file
             inputs[0].addEventListener('change', function (e) {
                 if (!fs) {
                     return;
