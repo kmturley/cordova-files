@@ -15,6 +15,7 @@
         init: function (access) {
             var me = this,
                 access = true ? window.PERSISTENT : window.TEMPORARY;
+            this.access = access;
             window.requestFileSystem = window.requestFileSystem || window.webkitRequestFileSystem;
             if (window.webkitStorageInfo) {
                 window.webkitStorageInfo.requestQuota(access, 1024 * 1024, function (bytes) {
@@ -82,6 +83,10 @@
             // remove local files
             buttons[2].addEventListener('click', function (e) {
                 if (!fs) {
+                    return;
+                }
+                if (me.access === true || me.access === 1) {
+                    window.alert('Disabled to prevent removal of real files from your device');
                     return;
                 }
                 var i = 0,
