@@ -12,13 +12,14 @@
         /**
          * @method init
          */
-        init: function () {
-            var me = this;
+        init: function (access) {
+            var me = this,
+                access = true ? window.PERSISTENT : window.TEMPORARY;
             window.requestFileSystem = window.requestFileSystem || window.webkitRequestFileSystem;
             if (window.webkitStorageInfo) {
-                window.webkitStorageInfo.requestQuota(window.TEMPORARY, 1024 * 1024, function (bytes) {
+                window.webkitStorageInfo.requestQuota(access, 1024 * 1024, function (bytes) {
                     if (window.requestFileSystem) {
-                        window.requestFileSystem(window.TEMPORARY, bytes, function (filesystem) {
+                        window.requestFileSystem(access, bytes, function (filesystem) {
                             me.example1(filesystem);
                             me.example2(filesystem);
                         }, me.onError);
@@ -114,10 +115,22 @@
                     return;
                 }
                 output.innerHTML += '<b>Local file</b><br/>';
-                fs.root.getFile('log.txt', null, function (file) {
-                    file.file(function (newfile) {
-                        output.innerHTML += 'path: ' + file.toURL() + '<br/>';
-                        output.innerHTML += 'data: ' + newfile + '<br/>';
+                fs.root.getFile('log.txt', null, function (fileEntry) {
+                    fileEntry.file(function (file) {
+                        output.innerHTML += 'path: ' + fileEntry.toURL() + '<br/>';
+                        output.innerHTML += 'data: ' + file + '<br/>';
+                        output.innerHTML += 'type: ' + file.type + '<br/>';
+                        output.innerHTML += 'typeof: ' + typeof file + '<br/>';
+                        
+                        // show the file contents
+                        var reader = new FileReader();
+                        reader.readAsText(file, "UTF-8");
+                        reader.onload = function (evt) {
+                            output.innerHTML += 'contents: ' + evt.target.result.slice(0, 100);
+                        }
+                        reader.onerror = function (evt) {
+                            output.innerHTML += 'contents: error reading file <br/>';
+                        }
                     });
                 }, me.onError);
             }, false);
@@ -134,6 +147,7 @@
                 xhr.onload = function (e) {
                     output.innerHTML += 'path: img/logo.png' + '<br/>';
                     output.innerHTML += 'data: ' + xhr.response + '<br/>';
+                    output.innerHTML += 'typeof: ' + typeof xhr.response + '<br/>';
                 };
                 xhr.onerror = function () {
                     console.log('loadFile.onerror: ' + url);
@@ -150,6 +164,7 @@
                 var newfile = e.target.files[0];
                 output.innerHTML += 'path: ' + newfile.name + '<br/>';
                 output.innerHTML += 'data: ' + newfile + '<br/>';
+                output.innerHTML += 'typeof: ' + typeof newfile + '<br/>';
             }, false);
         },
         /**
@@ -184,9 +199,9 @@
     // if using cordova, wait for ready event before running
     if (window.cordova) {
         document.addEventListener('deviceready', function (e) {
-            module.init();
+            module.init(true);
         }, false);
     } else {
-        module.init();
+        module.init(true);
     }
 }());
